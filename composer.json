@@ -1,0 +1,26 @@
+{
+    "name": "dexit/wp-rest-endpoint-manager",
+    "description": "Complete WordPress REST API Management Suite",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Your Name",
+            "email": "dexit@github.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "woocommerce/action-scheduler": "^3.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "WP_REST_Endpoint_Manager\\": "includes/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true
+        }
+    }
+}

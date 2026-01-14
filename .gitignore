@@ -1,0 +1,10 @@
+# WordPress Plugin Git Ignore
+/vendor/
+/node_modules/
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
+composer.lock
+/wp-rest-endpoint-manager.zip
