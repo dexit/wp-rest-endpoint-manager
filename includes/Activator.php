@@ -32,17 +32,11 @@ class Activator {
 	 * Register all custom post types for flush_rewrite_rules().
 	 */
 	private static function register_post_types() {
-		require_once WP_REM_PLUGIN_DIR . 'includes/post-types/class-rest-endpoint-cpt.php';
-		require_once WP_REM_PLUGIN_DIR . 'includes/post-types/class-controller-cpt.php';
-		require_once WP_REM_PLUGIN_DIR . 'includes/post-types/class-schema-cpt.php';
-		require_once WP_REM_PLUGIN_DIR . 'includes/post-types/class-ingest-webhook-cpt.php';
-		require_once WP_REM_PLUGIN_DIR . 'includes/post-types/class-dispatch-webhook-cpt.php';
-
-		$rest_endpoint_cpt = new Post_Types\REST_Endpoint_CPT();
-		$controller_cpt = new Post_Types\Controller_CPT();
-		$schema_cpt = new Post_Types\Schema_CPT();
-		$ingest_webhook_cpt = new Post_Types\Ingest_Webhook_CPT();
-		$dispatch_webhook_cpt = new Post_Types\Dispatch_Webhook_CPT();
+		$rest_endpoint_cpt = new Post_Types\Rest_Endpoint_Cpt();
+		$controller_cpt = new Post_Types\Controller_Cpt();
+		$schema_cpt = new Post_Types\Schema_Cpt();
+		$ingest_webhook_cpt = new Post_Types\Ingest_Webhook_Cpt();
+		$dispatch_webhook_cpt = new Post_Types\Dispatch_Webhook_Cpt();
 
 		$rest_endpoint_cpt->register();
 		$controller_cpt->register();

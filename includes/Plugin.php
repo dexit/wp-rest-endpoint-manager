@@ -56,47 +56,7 @@ class Plugin {
 	 * Load the required dependencies for this plugin.
 	 */
 	private function load_dependencies() {
-		// Core classes.
-		require_once WP_REM_PLUGIN_DIR . 'includes/class-logger.php';
-		require_once WP_REM_PLUGIN_DIR . 'includes/class-rate-limiter.php';
-		require_once WP_REM_PLUGIN_DIR . 'includes/class-validator.php';
-
-		// Post types.
-		require_once WP_REM_PLUGIN_DIR . 'includes/post-types/class-rest-endpoint-cpt.php';
-		require_once WP_REM_PLUGIN_DIR . 'includes/post-types/class-controller-cpt.php';
-		require_once WP_REM_PLUGIN_DIR . 'includes/post-types/class-schema-cpt.php';
-		require_once WP_REM_PLUGIN_DIR . 'includes/post-types/class-ingest-webhook-cpt.php';
-		require_once WP_REM_PLUGIN_DIR . 'includes/post-types/class-dispatch-webhook-cpt.php';
-
-		// REST API handlers.
-		require_once WP_REM_PLUGIN_DIR . 'includes/rest-api/class-endpoint-handler.php';
-		require_once WP_REM_PLUGIN_DIR . 'includes/rest-api/class-auth-manager.php';
-		require_once WP_REM_PLUGIN_DIR . 'includes/rest-api/class-controller-executor.php';
-		require_once WP_REM_PLUGIN_DIR . 'includes/rest-api/class-schema-validator.php';
-		require_once WP_REM_PLUGIN_DIR . 'includes/rest-api/class-response-modifier.php';
-
-		// Ingest system.
-		require_once WP_REM_PLUGIN_DIR . 'includes/ingest/class-ingest-handler.php';
-		require_once WP_REM_PLUGIN_DIR . 'includes/ingest/class-data-mapper.php';
-
-		// Dispatch system.
-		require_once WP_REM_PLUGIN_DIR . 'includes/dispatch/class-dispatch-handler.php';
-		require_once WP_REM_PLUGIN_DIR . 'includes/dispatch/class-queue-manager.php';
-		require_once WP_REM_PLUGIN_DIR . 'includes/dispatch/class-template-engine.php';
-
-		// Admin classes.
-		if ( is_admin() ) {
-			require_once WP_REM_PLUGIN_DIR . 'includes/admin/class-admin-menu.php';
-			require_once WP_REM_PLUGIN_DIR . 'includes/admin/class-dashboard.php';
-			require_once WP_REM_PLUGIN_DIR . 'includes/admin/class-log-viewer.php';
-			require_once WP_REM_PLUGIN_DIR . 'includes/admin/class-settings.php';
-			require_once WP_REM_PLUGIN_DIR . 'includes/admin/class-controller-manager.php';
-			require_once WP_REM_PLUGIN_DIR . 'includes/admin/class-schema-builder.php';
-			require_once WP_REM_PLUGIN_DIR . 'includes/admin/class-route-builder.php';
-			require_once WP_REM_PLUGIN_DIR . 'includes/admin/class-api-tester.php';
-			require_once WP_REM_PLUGIN_DIR . 'includes/admin/class-docs-generator.php';
-		}
-
+		// Logger is initialized manually as it is used immediately.
 		$this->logger = new Logger();
 	}
 

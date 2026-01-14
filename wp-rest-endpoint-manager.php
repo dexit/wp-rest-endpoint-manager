@@ -29,6 +29,13 @@ define( 'WP_REM_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'WP_REM_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 
 /**
+ * Autoloader for plugin classes (Composer).
+ */
+if ( file_exists( WP_REM_PLUGIN_DIR . 'vendor/autoload.php' ) ) {
+	require_once WP_REM_PLUGIN_DIR . 'vendor/autoload.php';
+}
+
+/**
  * Plugin activation hook.
  */
 function activate_wp_rest_endpoint_manager() {
@@ -46,13 +53,6 @@ function deactivate_wp_rest_endpoint_manager() {
 
 register_activation_hook( __FILE__, 'activate_wp_rest_endpoint_manager' );
 register_deactivation_hook( __FILE__, 'deactivate_wp_rest_endpoint_manager' );
-
-/**
- * Autoloader for plugin classes (Composer).
- */
-if ( file_exists( WP_REM_PLUGIN_DIR . 'vendor/autoload.php' ) ) {
-	require_once WP_REM_PLUGIN_DIR . 'vendor/autoload.php';
-}
 
 /**
  * Begin execution of the plugin.
