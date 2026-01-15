@@ -30,6 +30,21 @@ class Plugin {
 	protected $logger;
 
 	/**
+	 * @var Admin\API_Tester
+	 */
+	protected $api_tester;
+
+	/**
+	 * @var Admin\Log_Viewer
+	 */
+	protected $log_viewer;
+
+	/**
+	 * @var Admin\Settings
+	 */
+	protected $settings;
+
+	/**
 	 * Main Plugin Instance.
 	 *
 	 * Ensures only one instance of Plugin is loaded or can be loaded.
@@ -80,6 +95,13 @@ class Plugin {
 		add_action( 'init', array( $schema_cpt, 'register' ) );
 		add_action( 'init', array( $ingest_webhook_cpt, 'register' ) );
 		add_action( 'init', array( $dispatch_webhook_cpt, 'register' ) );
+		add_action( 'init', array( $this, 'register_post_meta' ) );
+
+		// Register AJAX handlers.
+		// These need to be registered early, especially for admin-ajax requests.
+		$this->api_tester = new Admin\API_Tester();
+		$this->log_viewer = new Admin\Log_Viewer();
+		$this->settings = new Admin\Settings();
 
 		// Register admin menu.
 		$pointers = new Admin\Pointers();
@@ -90,6 +112,66 @@ class Plugin {
 
 		// Enqueue admin scripts and styles.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ) );
+	}
+
+	/**
+	 * Register custom post meta for REST API / Block Editor support.
+	 */
+	public function register_post_meta() {
+		// REST Endpoint Meta
+		$endpoint_meta = array(
+			'_rem_namespace', '_rem_route', '_rem_methods', '_rem_auth_type', 
+			'_rem_auth_config', '_rem_callback_type', '_rem_controller_id', 
+			'_rem_callback_func', '_rem_status', '_rem_version'
+		);
+
+		foreach ( $endpoint_meta as $key ) {
+			register_post_meta( 'rest_endpoint', $key, array(
+				'show_in_rest' => true,
+				'single'       => true,
+				'type'         => 'string',
+			) );
+		}
+
+		// Controller Meta
+		register_post_meta( 'rest_controller', '_rem_controller_code', array(
+			'show_in_rest' => true,
+			'single'       => true,
+			'type'         => 'string',
+		) );
+
+		// Schema Meta
+		register_post_meta( 'rest_schema', '_rem_schema_json', array(
+			'show_in_rest' => true,
+			'single'       => true,
+			'type'         => 'string',
+		) );
+
+		// Ingest Webhook Meta
+		$ingest_meta = array( '_rem_webhook_slug', '_rem_webhook_token', '_rem_status', '_rem_custom_actions' );
+		foreach ( $ingest_meta as $key ) {
+			register_post_meta( 'ingest_webhook', $key, array(
+				'show_in_rest' => true,
+				'single'       => true,
+				'type'         => ( $key === '_rem_custom_actions' ) ? 'array' : 'string',
+				'show_in_rest' => array(
+					'schema' => array(
+						'type' => ( $key === '_rem_custom_actions' ) ? 'array' : 'string',
+						'items' => array( 'type' => 'string' ),
+					),
+				),
+			) );
+		}
+
+		// Dispatch Webhook Meta
+		$dispatch_meta = array( '_rem_webhook_url', '_rem_status', '_rem_methods' );
+		foreach ( $dispatch_meta as $key ) {
+			register_post_meta( 'dispatch_webhook', $key, array(
+				'show_in_rest' => true,
+				'single'       => true,
+				'type'         => ( $key === '_rem_methods' ) ? 'array' : 'string',
+			) );
+		}
 	}
 
 	/**
@@ -219,5 +301,32 @@ class Plugin {
 	 */
 	public function get_logger() {
 		return $this->logger;
+	}
+
+	/**
+	 * Get API Tester instance.
+	 *
+	 * @return Admin\API_Tester
+	 */
+	public function get_api_tester() {
+		return $this->api_tester;
+	}
+
+	/**
+	 * Get Log Viewer instance.
+	 *
+	 * @return Admin\Log_Viewer
+	 */
+	public function get_log_viewer() {
+		return $this->log_viewer;
+	}
+
+	/**
+	 * Get Settings instance.
+	 *
+	 * @return Admin\Settings
+	 */
+	public function get_settings() {
+		return $this->settings;
 	}
 }

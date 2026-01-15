@@ -349,28 +349,30 @@ PHP;
  * @param string $code PHP code to check.
  * @return array Result with 'valid' boolean and 'error' message.
  */
-function php_check_syntax( $code ) {
-	$result = array(
-		'valid' => true,
-		'error' => '',
-	);
+if ( ! function_exists( 'WP_REST_Endpoint_Manager\Post_Types\php_check_syntax' ) ) {
+	function php_check_syntax( $code ) {
+		$result = array(
+			'valid' => true,
+			'error' => '',
+		);
 
-	// Create temporary file.
-	$temp_file = tempnam( sys_get_temp_dir(), 'php_syntax_' );
-	file_put_contents( $temp_file, $code );
+		// Create temporary file.
+		$temp_file = tempnam( sys_get_temp_dir(), 'php_syntax_' );
+		file_put_contents( $temp_file, $code );
 
-	// Check syntax using php -l.
-	$output = array();
-	$return_var = 0;
-	exec( 'php -l ' . escapeshellarg( $temp_file ) . ' 2>&1', $output, $return_var );
+		// Check syntax using php -l.
+		$output = array();
+		$return_var = 0;
+		exec( 'php -l ' . escapeshellarg( $temp_file ) . ' 2>&1', $output, $return_var );
 
-	if ( $return_var !== 0 ) {
-		$result['valid'] = false;
-		$result['error'] = implode( "\n", $output );
+		if ( $return_var !== 0 ) {
+			$result['valid'] = false;
+			$result['error'] = implode( "\n", $output );
+		}
+
+		// Clean up.
+		unlink( $temp_file );
+
+		return $result;
 	}
-
-	// Clean up.
-	unlink( $temp_file );
-
-	return $result;
 }

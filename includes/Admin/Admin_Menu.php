@@ -125,23 +125,29 @@ class Admin_Menu {
 	 * Render logs page.
 	 */
 	public function render_logs() {
-		$log_viewer = new Log_Viewer();
-		$log_viewer->render();
+		$log_viewer = \WP_REST_Endpoint_Manager\Plugin::get_instance()->get_log_viewer();
+		if ( $log_viewer ) {
+			$log_viewer->render();
+		}
 	}
 
 	/**
 	 * Render API tester page.
 	 */
 	public function render_api_tester() {
-		$api_tester = new API_Tester();
-		$api_tester->render();
+		$api_tester = \WP_REST_Endpoint_Manager\Plugin::get_instance()->get_api_tester();
+		if ( $api_tester ) {
+			$api_tester->render();
+		}
 	}
 
 	/**
 	 * Render settings page.
 	 */
 	public function render_settings() {
-		$settings = new Settings();
-		$settings->render();
+		$settings = \WP_REST_Endpoint_Manager\Plugin::get_instance()->get_settings();
+		if ( $settings ) {
+			$settings->render();
+		}
 	}
 }
